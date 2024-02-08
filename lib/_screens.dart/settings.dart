@@ -1,4 +1,3 @@
-
 import 'package:Zylae/_screens.dart/widgets/media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -8,6 +7,8 @@ import 'package:Zylae/_screens.dart/fonts.dart';
 import 'package:Zylae/_screens.dart/privacy_screen.dart';
 import 'package:Zylae/_screens.dart/terms_and_condition.dart';
 import 'package:Zylae/_screens.dart/theme.dart';
+import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Menulist extends StatelessWidget {
   const Menulist({super.key});
@@ -102,7 +103,7 @@ settingshowBottomSheet({required BuildContext context}) {
                 style: GoogleFonts.inter(color: Colors.white),
               ),
               onTap: () {
-                Navigator.pop(context);
+                shareapp();
               },
             ),
             const Divider(),
@@ -166,8 +167,9 @@ _showRateUsDialog(BuildContext context) {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Would you like to rate our app on the Amazon store?',
-                  style: GoogleFonts.aboreto(fontSize:  mediaqueryHeight(
-                                                    0.018, context), color: Colors.amber),
+                  style: GoogleFonts.aboreto(
+                      fontSize: mediaqueryHeight(0.018, context),
+                      color: Colors.amber),
                 ),
               ),
               RatingBar.builder(
@@ -177,13 +179,9 @@ _showRateUsDialog(BuildContext context) {
                   Icons.star,
                   color: Colors.amberAccent,
                 ),
-                onRatingUpdate: (rating) {
-                  if (rating.toInt() < 0) {
-                    Navigator.pop(context);
-                  } else {
-                    Navigator.pop(context);
-                    launchURL();
-                  }
+                onRatingUpdate: (rating) async {
+                  Navigator.pop(context);
+                  await launchURL();
                 },
               ),
             ],
@@ -196,4 +194,11 @@ _showRateUsDialog(BuildContext context) {
 
 Future<void> launchURL() async {
   // ignore: deprecated_member_use
+  if (await launch('https://www.amazon.com/dp/B0CV5DNWCN/ref=apps_sf_sta')) {
+    throw "Try Again";
+  }
+}
+
+shareapp() {
+  Share.share('https://www.amazon.com/dp/B0CV5DNWCN/ref=apps_sf_sta');
 }

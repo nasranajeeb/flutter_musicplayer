@@ -34,47 +34,45 @@ class _playlistsState extends State<playlists> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 27, 8, 39),
       body: SafeArea(
-          child: Expanded(
-        child: FutureBuilder(
-          future: getFromPlaylist(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              List<String> allPlaylists = List.from(playlists);
-
-              allPlaylists
-                  .addAll(snapshot.data!.map((playlist) => playlist.name));
-              return GridView.builder(
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: mediaqueryHeight(0.022, context),
-                  mainAxisSpacing: mediaqueryHeight(0.025, context),
-                ),
-                itemCount: allPlaylists.length,
-                itemBuilder: (BuildContext context, int index) {
-                  PlaylistDbModel? currentPlaylist;
-                  if (index < playlists.length) {
-                    currentPlaylist = null;
-                  } else {
-                    int playlistIndex = index - playlists.length;
-                    if (playlistIndex < snapshot.data!.length) {
-                      currentPlaylist = snapshot.data![playlistIndex];
-                    } else {
+          child: FutureBuilder(
+            future: getFromPlaylist(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<String> allPlaylists = List.from(playlists);
+          
+                allPlaylists
+                    .addAll(snapshot.data!.map((playlist) => playlist.name));
+                return GridView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: mediaqueryHeight(0.022, context),
+                    mainAxisSpacing: mediaqueryHeight(0.025, context),
+                  ),
+                  itemCount: allPlaylists.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    PlaylistDbModel? currentPlaylist;
+                    if (index < playlists.length) {
                       currentPlaylist = null;
+                    } else {
+                      int playlistIndex = index - playlists.length;
+                      if (playlistIndex < snapshot.data!.length) {
+                        currentPlaylist = snapshot.data![playlistIndex];
+                      } else {
+                        currentPlaylist = null;
+                      }
                     }
-                  }
-                  return buildContainer(allPlaylists[index],
-                      index < playlists.length, index, currentPlaylist);
-                },
-              );
-            }
-          },
-        ),
-      )),
+                    return buildContainer(allPlaylists[index],
+                        index < playlists.length, index, currentPlaylist);
+                  },
+                );
+              }
+            },
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           checkplaylistNames();

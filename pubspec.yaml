@@ -50,6 +50,7 @@ dependencies:
   flutter_rating_stars: ^1.0.3+4
   flutter_rating_bar: ^4.0.1
   share: ^2.0.4
+  url_launcher: ^6.2.4
   
 dev_dependencies:
   flutter_test:

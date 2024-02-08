@@ -175,7 +175,7 @@ class _MySongState extends State<MySong> with SingleTickerProviderStateMixin {
           child: ArtWorkWIdget(),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.01,
+          height: MediaQuery.of(context).size.height * 0.001,
         ),
         Text(
           widget.songmodel[widget.index].name,
@@ -412,7 +412,7 @@ class _MySongState extends State<MySong> with SingleTickerProviderStateMixin {
             loopMode == LoopMode.off ? 'Repeat is OFF' : 'Repeat is ON',
             style: GoogleFonts.aboreto(
                 color: Colors.black,
-                fontSize: mediaqueryHeight(0.045, context)),
+                fontSize: mediaqueryHeight(0.020, context)),
           ),
           backgroundColor: Colors.white),
     );
@@ -497,7 +497,8 @@ class ArtWorkWIdget extends StatelessWidget {
         artworkFit: BoxFit.cover,
         nullArtworkWidget: Icon(
           Icons.music_note,
-          size: mediaqueryHeight(0.065, context),
+          color: Colors.white,
+          size: mediaqueryHeight(0.3, context),
         ),
       ),
     );
