@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:Zylae/Db/model/db_favmodel.dart';
@@ -31,6 +33,7 @@ Future<void> addSong({required List<SongModel> s}) async {
           path: song.data,
         ));
       }
+      
     }
     music();
   }
@@ -43,6 +46,7 @@ Future<List<MusicSong>> music() async {
     MusicSong a = songDB.get(i)!;
     songs.add(a);
   }
+ 
   return songs;
 }
 
@@ -109,6 +113,7 @@ void addSongToRecentlyPlayed(int songId) async {
   }
   recentlyPlayedBox.add(RecentlyPlayed(songIds: songId));
 }
+
 Future<List<MusicSong>> recentlyPlayedSongs() async {
   final recentlyPlayedBox = await Hive.openBox<RecentlyPlayed>('recents');
   List<RecentlyPlayed> songs = recentlyPlayedBox.values.toList();
@@ -176,8 +181,10 @@ Future<List<MusicSong>> mostPlayedSongs() async {
       }
     }
   }
+  print("naaa $finalList");
   return finalList;
 }
+
 addPlaylist({required String name, required List<int> songId}) async {
   final playListDb = await Hive.openBox<PlaylistDbModel>('playlist_db');
   playListDb.add(PlaylistDbModel(name: name, songIds: songId));
@@ -260,7 +267,8 @@ removeSongsFromPlaylist(
   debugPrint("$songid removed");
 }
 
-Future<List<MusicSong>> playlistSongs({required PlaylistDbModel playslist}) async {
+Future<List<MusicSong>> playlistSongs(
+    {required PlaylistDbModel playslist}) async {
   final playListDb = await Hive.openBox<PlaylistDbModel>('playlist_db');
   PlaylistDbModel? s = playListDb.get(playslist.key);
   List<int> plSongs = s!.songIds;
@@ -270,11 +278,12 @@ Future<List<MusicSong>> playlistSongs({required PlaylistDbModel playslist}) asyn
     for (int j = 0; j < plSongs.length; j++) {
       if (allSongs[i].songid == plSongs[j]) {
         result.add(MusicSong(
-             name: allSongs[i].name,
-            songid: allSongs[i].songid,
-            uri: allSongs[i].uri,
-            artist: allSongs[i].artist,
-            path: allSongs[i].path,));
+          name: allSongs[i].name,
+          songid: allSongs[i].songid,
+          uri: allSongs[i].uri,
+          artist: allSongs[i].artist,
+          path: allSongs[i].path,
+        ));
       }
     }
   }
